@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: payment-service
+  data:
+    mongodb:
+      database: db_payment
+      host: localhost
+      port: 27022
+server:
+  port: 8085
+message:
+  path-payment: /api/v1/payments
