@@ -1,4 +1,4 @@
-package com.nttdata.bootcamp.PaymentService.domain.mapper;
+package com.nttdata.bootcamp.PaymentService.infraestructure;
 
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentRequest;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentResponse;

@@ -3,10 +3,11 @@ package com.nttdata.bootcamp.PaymentService.domain.mapper;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentRequest;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentResponse;
 import com.nttdata.bootcamp.PaymentService.domain.entity.Payment;
+import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PaymentMapper implements IPaymentMapper{
+public class PaymentMapper implements IPaymentMapper {
     @Override
     public Payment toEntity(PaymentRequest request) {
         Payment payment = new Payment();

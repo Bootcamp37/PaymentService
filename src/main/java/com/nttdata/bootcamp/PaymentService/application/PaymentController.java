@@ -5,6 +5,7 @@ import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentResponse;
 import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${message.path-payment}")
+@RefreshScope
 public class PaymentController {
     @Autowired
     private final IPaymentService service;

@@ -1,4 +1,7 @@
 spring:
+  config:
+    import:
+      - optional:configserver:http://localhost:8888
   application:
     name: payment-service
   data:
@@ -8,5 +11,10 @@ spring:
       port: 27022
 server:
   port: 8085
+management:
+  endpoint:
+    web:
+      exposure:
+        include: "*"
 message:
   path-payment: /api/v1/payments

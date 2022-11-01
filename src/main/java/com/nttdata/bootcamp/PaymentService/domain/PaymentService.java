@@ -3,7 +3,7 @@ package com.nttdata.bootcamp.PaymentService.domain;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.CustomerActiveProductRequest;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentRequest;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentResponse;
-import com.nttdata.bootcamp.PaymentService.domain.mapper.IPaymentMapper;
+import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentMapper;
 import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentRepository;
 import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentService;
 import lombok.RequiredArgsConstructor;
