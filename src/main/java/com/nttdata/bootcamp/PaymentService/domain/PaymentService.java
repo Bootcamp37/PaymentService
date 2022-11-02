@@ -39,25 +39,26 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public Mono<PaymentResponse> save(PaymentRequest request) {
+    public Mono<PaymentResponse> save(Mono<PaymentRequest> request) {
         // Existe la cuenta?
-        return customerProductRepository.getById(request.getCustomerActiveProductId())
+        return request.flatMap(e ->
+            customerProductRepository.getById(e.getCustomerActiveProductId())
                 .flatMap(customerActiveProductResponse -> {
                     // Coloca la fecha
-                    request.setShoppingDate(getDate());
+                    e.setShoppingDate(getDate());
                     // Tiene saldo?
-                    if ( (customerActiveProductResponse.getDebt() - request.getAmount()) < 0) {
+                    if ( (customerActiveProductResponse.getDebt() - e.getAmount()) < 0) {
                         // Retorna error
                         return Mono.error(RuntimeException::new);
                     }
 
                     CustomerActiveProductRequest update = new CustomerActiveProductRequest();
                     BeanUtils.copyProperties(customerActiveProductResponse, update);
-                    update.setDebt(customerActiveProductResponse.getDebt() - request.getAmount());
+                    update.setDebt(customerActiveProductResponse.getDebt() - e.getAmount());
                     // Actualizar saldo
-                    return customerProductRepository.update(update, request.getCustomerActiveProductId())
+                    return customerProductRepository.update(update, e.getCustomerActiveProductId())
                             // Guardar operacion
-                            .flatMap(p -> Mono.just(request))
+                            .flatMap(p -> Mono.just(e))
                             .map(mapper::toEntity)
                             .flatMap(repository::save)
                             .map(mapper::toResponse)
@@ -65,11 +66,11 @@ public class PaymentService implements IPaymentService {
                 })
                 // No Existe
                 // Mandar error
-                .switchIfEmpty(Mono.error(RuntimeException::new));
+                .switchIfEmpty(Mono.error(RuntimeException::new)));
     }
 
     @Override
-    public Mono<PaymentResponse> update(PaymentRequest request, String id) {
+    public Mono<PaymentResponse> update(Mono<PaymentRequest> request, String id) {
         return Mono.just(new PaymentResponse());
     }
 

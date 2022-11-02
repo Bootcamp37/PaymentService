@@ -10,9 +10,9 @@ public interface IPaymentService {
 
     Mono<PaymentResponse> getById(String id);
 
-    Mono<PaymentResponse> save(PaymentRequest request);
+    Mono<PaymentResponse> save(Mono<PaymentRequest> request);
 
-    Mono<PaymentResponse> update(PaymentRequest request, String id);
+    Mono<PaymentResponse> update(Mono<PaymentRequest> request, String id);
 
     Mono<PaymentResponse> delete(String id);
 }
