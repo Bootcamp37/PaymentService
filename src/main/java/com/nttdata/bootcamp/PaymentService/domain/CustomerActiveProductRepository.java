@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,12 +26,16 @@ public class CustomerActiveProductRepository {
     public String pathUpdate;
     @Autowired
     ReactiveCircuitBreakerFactory reactiveCircuitBreakerFactory;
+
     public Mono<CustomerActiveProductResponse> getById(String idCustomerPassiveProduct) {
+        log.debug("====> CustomerActiveProductRepository: GetById");
         WebClient webClientProduct = WebClient.builder().baseUrl(urlCustomerProduct).build();
         return webClientProduct.get()
-                .uri(pathGet+"{id}", idCustomerPassiveProduct)
+                .uri(pathGet + "{id}", idCustomerPassiveProduct)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Error 400")))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Error 500")))
                 .bodyToMono(CustomerActiveProductResponse.class)
                 .transform(it -> reactiveCircuitBreakerFactory.create(CUSTOMER_PRODUCT_SERVICE)
                         .run(it, throwable -> Mono.just(new CustomerActiveProductResponse()))
@@ -38,12 +43,15 @@ public class CustomerActiveProductRepository {
     }
 
     public Mono<CustomerActiveProductResponse> update(CustomerActiveProductRequest request, String id) {
+        log.debug("====> CustomerActiveProductRepository: Update");
         WebClient webClientProduct = WebClient.builder().baseUrl(urlCustomerProduct).build();
         return webClientProduct.put()
-                .uri(pathUpdate+"{id}", id)
+                .uri(pathUpdate + "{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Error 400")))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Error 500")))
                 .bodyToMono(CustomerActiveProductResponse.class)
                 .transform(it -> reactiveCircuitBreakerFactory.create(CUSTOMER_PRODUCT_SERVICE)
                         .run(it, throwable -> Mono.just(new CustomerActiveProductResponse()))

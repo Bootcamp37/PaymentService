@@ -4,6 +4,7 @@ import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentRequest;
 import com.nttdata.bootcamp.PaymentService.domain.dbo.PaymentResponse;
 import com.nttdata.bootcamp.PaymentService.infraestructure.IPaymentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("${message.path-payment}")
 @RefreshScope
+@Slf4j
 public class PaymentController {
     @Autowired
     private final IPaymentService service;
@@ -25,27 +27,34 @@ public class PaymentController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Flux<PaymentResponse> getAll() {
+        log.debug("====> PaymentController: GetAll");
         return service.getAll();
     }
+
     @GetMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Mono<PaymentResponse>> getById(@PathVariable String id) {
+        log.debug("====> PaymentController: GetById");
         Mono<PaymentResponse> paymentResponseMono = service.getById(id);
         return new ResponseEntity<>(paymentResponseMono, paymentResponseMono != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<PaymentResponse> save(@RequestBody PaymentRequest request) {
+        log.debug("====> PaymentController: Save");
         return service.save(Mono.just(request));
     }
 
     @PutMapping("/update/{id}")
     public Mono<PaymentResponse> update(@RequestBody PaymentRequest request, @PathVariable String id) {
+        log.debug("====> PaymentController: Update");
         return service.update(Mono.just(request), id);
     }
 
     @DeleteMapping("/delete/{id}")
     public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
+        log.debug("====> PaymentController: Delete");
         return service.delete(id)
                 .map(r -> ResponseEntity.ok().<Void>build())
                 .defaultIfEmpty(ResponseEntity.notFound().build());
