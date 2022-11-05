@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class PaymentMapper implements IPaymentMapper {
     @Override
     public Payment toEntity(PaymentRequest request) {
-        log.debug("====> PaymentMapper: ToEntity");
+        log.info("====> PaymentMapper: ToEntity");
         Payment payment = new Payment();
         BeanUtils.copyProperties(request, payment);
         return payment;
@@ -21,7 +21,7 @@ public class PaymentMapper implements IPaymentMapper {
 
     @Override
     public PaymentResponse toResponse(Payment payment) {
-        log.debug("====> PaymentMapper: ToResponse");
+        log.info("====> PaymentMapper: ToResponse");
         PaymentResponse paymentResponse = new PaymentResponse();
         BeanUtils.copyProperties(payment, paymentResponse);
         return paymentResponse;

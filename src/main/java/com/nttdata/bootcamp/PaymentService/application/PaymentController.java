@@ -27,14 +27,14 @@ public class PaymentController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Flux<PaymentResponse> getAll() {
-        log.debug("====> PaymentController: GetAll");
+        log.info("====> PaymentController: GetAll");
         return service.getAll();
     }
 
     @GetMapping(path = "/{id}")
     @ResponseBody
     public ResponseEntity<Mono<PaymentResponse>> getById(@PathVariable String id) {
-        log.debug("====> PaymentController: GetById");
+        log.info("====> PaymentController: GetById");
         Mono<PaymentResponse> paymentResponseMono = service.getById(id);
         return new ResponseEntity<>(paymentResponseMono, paymentResponseMono != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
@@ -42,19 +42,19 @@ public class PaymentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<PaymentResponse> save(@RequestBody PaymentRequest request) {
-        log.debug("====> PaymentController: Save");
+        log.info("====> PaymentController: Save");
         return service.save(Mono.just(request));
     }
 
     @PutMapping("/update/{id}")
     public Mono<PaymentResponse> update(@RequestBody PaymentRequest request, @PathVariable String id) {
-        log.debug("====> PaymentController: Update");
+        log.info("====> PaymentController: Update");
         return service.update(Mono.just(request), id);
     }
 
     @DeleteMapping("/delete/{id}")
     public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
-        log.debug("====> PaymentController: Delete");
+        log.info("====> PaymentController: Delete");
         return service.delete(id)
                 .map(r -> ResponseEntity.ok().<Void>build())
                 .defaultIfEmpty(ResponseEntity.notFound().build());

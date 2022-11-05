@@ -15,5 +15,5 @@ public class Payment {
     private String id;
     private String customerActiveProductId;
     private Double amount;
-    private String shoppingDate;
+    private String date;
 }
