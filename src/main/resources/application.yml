@@ -5,10 +5,14 @@ spring:
     name: payment-service
   config:
     import:
-      - optional:configserver:http://ms-configserver:8888
+      - optional:configserver:https://ms-config.azurewebsites.net
   data:
     mongodb:
-      uri: mongodb://db_payment:27017/db_payment
+      uri: mongodb+srv://admin:5K8yj70q4RpuiBSE@bootcamp37.anglhbu.mongodb.net/db_payment
+eureka:
+  client:
+    service-url:
+      defaultZone: https://ms-discovery.azurewebsites.net/eureka/
 management:
   endpoint:
     web:
@@ -16,7 +20,7 @@ management:
         include: "*"
 message:
   path-payment: /api/v1/payments
-  path-customerProductDomain: http://ms-customerproduct:8082
+  path-customerProductDomain: https://ms-customerproduct.azurewebsites.net
   path-get: /api/v1/customerActivesProducts/
   path-update: /api/v1/customerActivesProducts/update/
 resilience4j:
