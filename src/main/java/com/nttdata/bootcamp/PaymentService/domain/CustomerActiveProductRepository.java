@@ -36,10 +36,10 @@ public class CustomerActiveProductRepository {
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Error 400")))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Error 500")))
-                .bodyToMono(CustomerActiveProductResponse.class)
+                .bodyToMono(CustomerActiveProductResponse.class)/*
                 .transform(it -> reactiveCircuitBreakerFactory.create(CUSTOMER_PRODUCT_SERVICE)
                         .run(it, throwable -> Mono.just(new CustomerActiveProductResponse()))
-                );
+                )*/;
     }
 
     public Mono<CustomerActiveProductResponse> update(CustomerActiveProductRequest request, String id) {
@@ -52,9 +52,9 @@ public class CustomerActiveProductRepository {
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new Exception("Error 400")))
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new Exception("Error 500")))
-                .bodyToMono(CustomerActiveProductResponse.class)
+                .bodyToMono(CustomerActiveProductResponse.class)/*
                 .transform(it -> reactiveCircuitBreakerFactory.create(CUSTOMER_PRODUCT_SERVICE)
                         .run(it, throwable -> Mono.just(new CustomerActiveProductResponse()))
-                );
+                )*/;
     }
 }
